@@ -6,6 +6,7 @@ export interface IUser extends Document {
     email: string,
     phone: string,
     password: string
+    role: string
 }
 
 const userSchema = new Schema({
@@ -37,6 +38,11 @@ const userSchema = new Schema({
         type: String,
         required: true,
         trim: true,
+    },
+    role : {
+        type: String,
+        default: 'user',
+        enum: ['user', 'admin']
     }
 })
 

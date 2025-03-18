@@ -31,7 +31,7 @@ export const authenticate = async (req: Request, res: Response, next: NextFuncti
         if (typeof result === 'object' && result.id) {
             const user = await User.findById(result.id).select('-password')
             if (!user) {
-                const error = new Error('EL usuario no existe')
+                const error = new Error('El usuario no existe')
                 res.status(404).json({error: error.message})
                 return
             }
