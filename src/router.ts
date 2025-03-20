@@ -6,6 +6,7 @@ import { createAbout, deleteAbout, getAbout, updateAbout } from './handlers/abou
 import { handleInputErrors } from './middleware/validation'
 import { authenticate } from './middleware/auth'
 import { isAdmin } from './middleware/authRole'
+import { controlBalanceo, controlCarrusel, getHistoryData, getRealtimeData, saveIoTData } from './handlers/iot'
 const router = Router()
 
 /** Autenticacion y registro **/
@@ -109,10 +110,10 @@ router.patch('/about/update',
     isAdmin, 
     updateAbout
 )
-router.delete('/about/delete', deleteAbout)
-// router.get('/product/search/:search', getProducts)
-// router.get('/product/search/:search/category/:category', getProducts)
-// router.get('/product/search/:search/category/:category/price/:price', getProducts)
-// router.get('/product/search/:search/category/:category/price/:price/stock/:stock', getProducts)
-
+router.delete('/about/delete', authenticate, deleteAbout)
+router.post("/iot/data", authenticate,  saveIoTData)
+router.get("/iot/realtime", authenticate, getRealtimeData)
+router.get("/iot/history", authenticate, getHistoryData)
+router.post("/iot/control/balanceo", controlBalanceo);
+router.post("/iot/control/carrusel", controlCarrusel);
 export default router

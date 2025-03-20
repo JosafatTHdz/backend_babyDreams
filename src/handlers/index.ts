@@ -1,11 +1,10 @@
 import { Request, Response } from 'express'
-import slug from 'slug'
 import User from "../models/User"
 import { checkPassword, hashPass } from '../utils/auth'
 import { generateJWT } from '../utils/jwt'
 
 export const createAccount = async (req: Request, res: Response) => {
-
+    const slug = (await import("slug")).default
     const { email, password, role } = req.body
 
     const userExist = await User.findOne({email})
@@ -60,6 +59,7 @@ export const getUser = async (req: Request, res: Response) => {
 }
 
 export const updateProfile = async (req: Request, res: Response) => {
+    const slug = (await import("slug")).default;
     try {
 
         const { name, email, phone } = req.body

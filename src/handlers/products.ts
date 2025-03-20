@@ -1,13 +1,12 @@
 import { Request, Response } from 'express'
 import Product from '../models/Product'
 import Category from '../models/Category'
-import slug from 'slug'
 import formidable from 'formidable'
 import cloudinary from '../config/cloudinary'
 import { v4 as uuid } from 'uuid'
 
 export const createProduct = async (req: Request, res: Response) => {
-
+    const slug = (await import("slug")).default;
     const name = slug(req.body.name, '')
     const nameExist = await Product.findOne({name})
     if (nameExist && nameExist.category !== req.body.category) {
@@ -22,34 +21,34 @@ export const createProduct = async (req: Request, res: Response) => {
 }
 
 export const uploadImage = async (req: Request, res: Response) => {
-    const form = formidable({ multiples: false });
+    const form = formidable({ multiples: false })
 
     try {
         form.parse(req, async (error, fields, files) => {
             if (error) {
                 console.error("❌ Error en formidable:", error);
-                return res.status(500).json({ error: "Error al procesar la imagen" });
+                return res.status(500).json({ error: "Error al procesar la imagen" })
             }
 
-            console.log("🛠️ Campos recibidos en formidable:", fields);
+            console.log("🛠️ Campos recibidos en formidable:", fields)
 
             if (!files.file || !files.file[0]) {
-                return res.status(400).json({ error: "No se subió ninguna imagen" });
+                return res.status(400).json({ error: "No se subió ninguna imagen" })
             }
 
-            const productId = fields.productId?.[0]; // 🔹 Corregido para asegurar que extrae el ID correctamente
+            const productId = fields.productId?.[0]
             if (!productId) {
                 console.error("❌ productId no recibido:", fields);
-                return res.status(400).json({ error: "El ID del producto es obligatorio" });
+                return res.status(400).json({ error: "El ID del producto es obligatorio" })
             }
 
-            console.log("🔹 Producto a actualizar con imagen:", productId);
+            console.log("🔹 Producto a actualizar con imagen:", productId)
 
             // Subir la imagen a Cloudinary
             cloudinary.uploader.upload(files.file[0].filepath, { public_id: uuid() }, async (err, result) => {
                 if (err) {
-                    console.error("❌ Error al subir imagen a Cloudinary:", err);
-                    return res.status(500).json({ error: "Error al subir la imagen" });
+                    console.error("❌ Error al subir imagen a Cloudinary:", err)
+                    return res.status(500).json({ error: "Error al subir la imagen" })
                 }
 
                 try {
@@ -58,24 +57,24 @@ export const uploadImage = async (req: Request, res: Response) => {
                         productId,
                         { image: result.secure_url },
                         { new: true }
-                    );
+                    )
 
                     if (!updatedProduct) {
-                        console.error("❌ Producto no encontrado para actualizar.");
-                        return res.status(404).json({ error: "Producto no encontrado" });
+                        console.error("❌ Producto no encontrado para actualizar.")
+                        return res.status(404).json({ error: "Producto no encontrado" })
                     }
 
-                    console.log("✅ Imagen subida y producto actualizado:", updatedProduct);
-                    res.status(200).json({ message: "Imagen subida y producto actualizado", product: updatedProduct });
+                    console.log("✅ Imagen subida y producto actualizado:", updatedProduct)
+                    res.status(200).json({ message: "Imagen subida y producto actualizado", product: updatedProduct })
                 } catch (e) {
-                    console.error("❌ Error al actualizar producto en DB:", e);
-                    res.status(500).json({ error: "Error al actualizar el producto" });
+                    console.error("❌ Error al actualizar producto en DB:", e)
+                    res.status(500).json({ error: "Error al actualizar el producto" })
                 }
-            });
-        });
+            })
+        })
     } catch (e) {
-        console.error("❌ Error general en uploadImage:", e);
-        res.status(500).json({ error: "Error interno del servidor" });
+        console.error("❌ Error general en uploadImage:", e)
+        res.status(500).json({ error: "Error interno del servidor" })
     }
 }
 

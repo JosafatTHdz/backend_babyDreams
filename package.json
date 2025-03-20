@@ -4,8 +4,10 @@
   "description": "Proyecto babydreams",
   "license": "ISC",
   "author": "Josafat Tapia",
-  "main": "index.js",
+  "main": "index.ts",
   "scripts": {
+    "build": "tsc",
+    "start": "vercel dev",
     "dev": "nodemon src/index.ts",
     "dev:api": "kill-port 4000 && nodemon src/index.ts --api"
   },
@@ -21,6 +23,7 @@
     "formidable": "^3.5.2",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.12.1",
+    "mqtt": "^5.10.4",
     "slug": "^10.0.0",
     "uuid": "^11.1.0"
   },
@@ -31,6 +34,7 @@
     "@types/express": "^5.0.0",
     "@types/formidable": "^3.4.5",
     "@types/jsonwebtoken": "^9.0.9",
+    "@types/mqtt": "^0.0.34",
     "@types/node": "^22.13.9",
     "@types/slug": "^5.0.9",
     "dotenv": "^16.4.7",

@@ -4,6 +4,7 @@ import 'dotenv/config'
 import router from './router'
 import { connectDB } from './config/db'
 import { corsConfig } from './config/cors'
+import "./config/mqtt";
 
 connectDB()
 
