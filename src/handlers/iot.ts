@@ -27,19 +27,23 @@ export const saveIoTData = async (req: Request, res: Response) => {
     }
 };
 
-// 🔹 Obtener los datos en tiempo real (última lectura)
+// 🔹 Obtener datos en tiempo real para un dispositivo específico
 export const getRealtimeData = async (req: Request, res: Response) => {
+    const { deviceId } = req.params;
+  
     try {
-        const latestData = await IoTData.findOne().sort({ timestamp: -1 });
-        if (!latestData) {
-            res.status(404).json({ error: "No hay datos disponibles." });
-            return 
-        }
-        res.json(latestData);
+      const latestData = await IoTData.findOne({ deviceId }).sort({ timestamp: -1 });
+  
+      if (!latestData) {
+        res.status(404).json({ error: "No hay datos disponibles para este dispositivo." });
+        return
+      }
+  
+      res.json(latestData);
     } catch (error) {
-        res.status(500).json({ error: "Error al obtener datos en tiempo real." });
+      res.status(500).json({ error: "Error al obtener datos en tiempo real." });
     }
-};
+  };
 
 // 🔹 Obtener el historial de datos
 export const getHistoryData = async (req: Request, res: Response) => {
@@ -53,8 +57,10 @@ export const getHistoryData = async (req: Request, res: Response) => {
 
 // 🔹 Handler para balanceo
 export const controlBalanceo = (req: Request, res: Response) => {
-    const { estado } = req.body; // true/false
+    const { estado, macAddress: mac } = req.body; // true/false
     const comando = estado ? "on" : "off";
+
+    const topic = `esp32/${mac}/control/balanceo`;
 
     mqttClient.publish("esp32/control/balanceo", comando, (err) => {
         if (err) {

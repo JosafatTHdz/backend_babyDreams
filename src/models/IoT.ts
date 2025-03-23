@@ -6,7 +6,8 @@ const IoTDataSchema = new mongoose.Schema({
     obstaculo: { type: Boolean, required: true },
     balanceoActivo: { type: Boolean, required: true },
     carruselActivo: { type: Boolean, required: true },
-    timestamp: { type: Date, default: Date.now }
+    timestamp: { type: Date, default: Date.now },
+    deviceId: { type: mongoose.Schema.Types.ObjectId, ref: "Device", required: true }
 });
 
 const IoTData = mongoose.model("IoTData", IoTDataSchema);

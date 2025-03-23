@@ -7,6 +7,11 @@ import { handleInputErrors } from './middleware/validation'
 import { authenticate } from './middleware/auth'
 import { isAdmin } from './middleware/authRole'
 import { controlBalanceo, controlCarrusel, getHistoryData, getRealtimeData, saveIoTData } from './handlers/iot'
+import { addFAQ, deleteFAQ, getFAQ, updateFAQ } from './handlers/faq'
+import { addPolicy, deletePolicy, getPolicies, getPolicyById, updatePolicy } from './handlers/policies'
+import { addTerm, deleteTerm, getTermById, getTerms, updateTerm } from './handlers/terms'
+import { requireDevice } from './middleware/authDevice'
+import { getMyDevices, registerDevice } from './handlers/device'
 const router = Router()
 
 /** Autenticacion y registro **/
@@ -112,8 +117,29 @@ router.patch('/about/update',
 )
 router.delete('/about/delete', authenticate, deleteAbout)
 router.post("/iot/data", authenticate,  saveIoTData)
-router.get("/iot/realtime", authenticate, getRealtimeData)
+router.get("/iot/realtime/:id", authenticate, requireDevice, getRealtimeData)
 router.get("/iot/history", authenticate, getHistoryData)
-router.post("/iot/control/balanceo", controlBalanceo);
-router.post("/iot/control/carrusel", controlCarrusel);
+router.post("/iot/control/balanceo", authenticate, requireDevice, controlBalanceo);
+router.post("/iot/control/carrusel",  authenticate, requireDevice, controlCarrusel);
+
+router.post('/device/register', authenticate, registerDevice)
+router.get('/device/mine', authenticate, getMyDevices)  
+
+router.get('/faqs', getFAQ)
+router.post('/faqs/add', addFAQ)
+router.patch('/faqs/update/:id', updateFAQ)
+router.delete('/faqs/delete/:id', deleteFAQ)
+
+router.get('/policies', getPolicies)
+router.get('/policies/:id', getPolicyById)
+router.post('/policies/add', addPolicy)
+router.patch('/policies/update/:id', updatePolicy)
+router.delete('/policies/delete/:id', deletePolicy)
+
+router.get('/terms', getTerms)
+router.get('/terms/:id', getTermById)
+router.post('/terms/add', addTerm)
+router.patch('/terms/update/:id', updateTerm)
+router.delete('/terms/delete/:id', deleteTerm)
+
 export default router

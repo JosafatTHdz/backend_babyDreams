@@ -16,7 +16,7 @@ export const createProduct = async (req: Request, res: Response) => {
     }
     const product = new Product(req.body)
  
-    await product.save()
+    await product.save() 
     res.status(201).json(product)
 }
 
