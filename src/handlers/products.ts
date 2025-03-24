@@ -131,8 +131,8 @@ export const deleteProduct = async (req: Request, res: Response) => {
 }
 
 export const updateProduct = async (req: Request, res: Response) => {
-    const { productId } = req.body
-    const product = await Product.findById(productId)
+    const { id } = req.body
+    const product = await Product.findById(id)
     if (!product) {
         res.status(404).send('Producto no encontrado')
         return

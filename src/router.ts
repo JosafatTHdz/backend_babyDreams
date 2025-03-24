@@ -90,7 +90,7 @@ router.get('/product', getProducts)
 router.get('/product/category', getCategories)
 router.get('/product/category/:categoryId', getProductsByCategory)
 router.get('/product/:productId', getProduct)
-router.get('/product/update/:productId', 
+router.patch('/product/update/:id', 
     authenticate, 
     isAdmin, 
     updateProduct
@@ -117,8 +117,7 @@ router.patch('/about/update',
 )
 router.delete('/about/delete', authenticate, deleteAbout)
 router.post("/iot/data", authenticate,  saveIoTData)
-router.get("/iot/realtime/:id", authenticate, requireDevice, getRealtimeData)
-router.get("/iot/history", authenticate, getHistoryData)
+router.get("/iot/realtime/:deviceId", authenticate, requireDevice, getRealtimeData)
 router.post("/iot/control/balanceo", authenticate, requireDevice, controlBalanceo);
 router.post("/iot/control/carrusel",  authenticate, requireDevice, controlCarrusel);
 
