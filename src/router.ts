@@ -118,8 +118,8 @@ router.patch('/about/update',
 router.delete('/about/delete', authenticate, deleteAbout)
 router.post("/iot/data", authenticate,  saveIoTData)
 router.get("/iot/realtime/:deviceId", authenticate, requireDevice, getRealtimeData)
-router.post("/iot/control/balanceo", authenticate, requireDevice, controlBalanceo);
-router.post("/iot/control/carrusel",  authenticate, requireDevice, controlCarrusel);
+router.post("/iot/control/balanceo", authenticate, controlBalanceo);
+router.post("/iot/control/carrusel",  authenticate, controlCarrusel);
 
 router.post('/device/register', authenticate, registerDevice)
 router.get('/device/mine', authenticate, getMyDevices)  

@@ -4,7 +4,6 @@ import Device from "../models/Device"; // modelo nuevo
 
 export const getMyDevices = async (req: Request, res: Response) => {
     const userId = req.user.id;
-
     try {
         const devices = await Device.find({ userId });
         res.json(devices);

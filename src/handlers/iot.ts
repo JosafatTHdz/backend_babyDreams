@@ -58,6 +58,7 @@ export const getHistoryData = async (req: Request, res: Response) => {
 // 🔹 Handler para balanceo
 export const controlBalanceo = (req: Request, res: Response) => {
     const { estado, macAddress: mac } = req.body; // true/false
+    console.log("estado", estado, "mac", mac)
     const comando = estado ? "on" : "off";
 
     const topic = `esp32/${mac}/control/balanceo`;
@@ -75,6 +76,7 @@ export const controlBalanceo = (req: Request, res: Response) => {
 // 🔹 Handler para carrusel
 export const controlCarrusel = (req: Request, res: Response) => {
     const { estado } = req.body; // true/false
+    console.log("estado", estado)
     const comando = estado ? "on" : "off";
 
     mqttClient.publish("esp32/control/carrusel", comando, (err) => {
