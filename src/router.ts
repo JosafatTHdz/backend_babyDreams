@@ -1,6 +1,6 @@
 import { Router } from 'express'
 import { body } from 'express-validator'
-import { createAccount, getUser, login, updateProfile } from './handlers'
+import { createAccount, deleteUser, getAllUsers, getUser, getUsersByDevice, getUsuariosConDispositivos, login, updateProfile } from './handlers'
 import { createProduct, getCategories, getProduct, getProducts, getProductsByCategory, updateProduct, uploadImage } from './handlers/products'
 import { createAbout, deleteAbout, getAbout, updateAbout } from './handlers/about'
 import { handleInputErrors } from './middleware/validation'
@@ -63,6 +63,13 @@ router.patch('/user',
     authenticate, 
     updateProfile
 )
+
+router.get('/admin/device/:macAddress/users', getUsersByDevice)
+router.get("/admin/usuarios-dispositivos", authenticate, isAdmin, getUsuariosConDispositivos)
+router.get('/admin/users', authenticate, isAdmin, getAllUsers)
+router.delete('/admin/users/delete/:id', authenticate, isAdmin, deleteUser)
+
+router.get('/iot/history',)
 
 router.post('/product/register', 
     body('name')

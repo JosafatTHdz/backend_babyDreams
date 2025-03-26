@@ -61,8 +61,6 @@ export const controlBalanceo = (req: Request, res: Response) => {
     console.log("estado", estado, "mac", mac)
     const comando = estado ? "on" : "off";
 
-    const topic = `esp32/${mac}/control/balanceo`;
-
     mqttClient.publish("esp32/control/balanceo", comando, (err) => {
         if (err) {
             console.error("❌ Error publicando a MQTT:", err);
@@ -71,11 +69,12 @@ export const controlBalanceo = (req: Request, res: Response) => {
         console.log(`📡 balanceo -> ${comando}`);
         res.json({ success: true, message: `Balanceo ${comando}` });
     });
+
 };
 
 // 🔹 Handler para carrusel
 export const controlCarrusel = (req: Request, res: Response) => {
-    const { estado } = req.body; // true/false
+    const { estado, macAddress: mac } = req.body; // true/false
     console.log("estado", estado)
     const comando = estado ? "on" : "off";
 
@@ -84,7 +83,7 @@ export const controlCarrusel = (req: Request, res: Response) => {
             console.error("❌ Error publicando a MQTT:", err);
             return res.status(500).json({ error: "Error al publicar en MQTT" });
         }
-        console.log(`📡 carrusel -> ${comando}`);
+        console.log(`📡 carrusel -> ${comando}`)
         res.json({ success: true, message: `Carrusel ${comando}` });
     });
 };

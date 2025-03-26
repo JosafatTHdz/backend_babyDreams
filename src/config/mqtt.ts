@@ -1,6 +1,7 @@
 import mqtt from "mqtt";
 import IoTData from "../models/IoT";
 import Device from "../models/Device";
+import { Server as SocketIOServer } from "socket.io";
 
 const mqttClient = mqtt.connect("mqtts://jfae02f3.ala.us-east-1.emqxsl.com", {
     port: 8883,
