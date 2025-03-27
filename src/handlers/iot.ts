@@ -63,10 +63,10 @@ export const controlBalanceo = (req: Request, res: Response) => {
 
     mqttClient.publish("esp32/control/balanceo", comando, (err) => {
         if (err) {
-            console.error("❌ Error publicando a MQTT:", err);
+            console.error("Error publicando a MQTT:", err);
             return res.status(500).json({ error: "Error al publicar en MQTT" });
         }
-        console.log(`📡 balanceo -> ${comando}`);
+        console.log(`balanceo -> ${comando}`);
         res.json({ success: true, message: `Balanceo ${comando}` });
     });
 
@@ -80,10 +80,10 @@ export const controlCarrusel = (req: Request, res: Response) => {
 
     mqttClient.publish("esp32/control/carrusel", comando, (err) => {
         if (err) {
-            console.error("❌ Error publicando a MQTT:", err);
+            console.error("Error publicando a MQTT:", err);
             return res.status(500).json({ error: "Error al publicar en MQTT" });
         }
-        console.log(`📡 carrusel -> ${comando}`)
+        console.log(`carrusel -> ${comando}`)
         res.json({ success: true, message: `Carrusel ${comando}` });
     });
 };

@@ -10,7 +10,7 @@ const mqttClient = mqtt.connect("mqtts://jfae02f3.ala.us-east-1.emqxsl.com", {
 });
 
 mqttClient.on("connect", () => {
-    console.log("✅ Conectado al broker MQTT");
+    console.log("Conectado al broker MQTT");
     mqttClient.subscribe("esp32/datos");
 });
 
@@ -28,12 +28,12 @@ mqttClient.on("message", async (topic, message) => {
           typeof balanceoActivo !== "boolean" ||
           typeof carruselActivo !== "boolean"
         ) {
-          return console.error("❌ Datos inválidos");
+          return console.error("Datos inválidos");
         }
   
         const dispositivo = await Device.findOne({ macAddress: macAddress.toUpperCase() });
         if (!dispositivo) {
-          console.log("⚠️ Dispositivo no encontrado:", macAddress);
+          console.log("Dispositivo no encontrado:", macAddress);
           return;
         }
   
@@ -47,10 +47,10 @@ mqttClient.on("message", async (topic, message) => {
         })
   
         await nuevaLectura.save()
-        console.log("✅ Datos guardados para dispositivo:", macAddress)
+        console.log("Datos guardados para dispositivo:", macAddress)
       }
     } catch (error) {
-      console.error("❌ Error al procesar MQTT:", error)
+      console.error("Error al procesar MQTT:", error)
     }
   })
 
